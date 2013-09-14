@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="stylesheet" type="text/css" href="css/app.css" media="all" />
+    <style>
+      body { padding-top: 40px; }
+      .tabs-left>.nav-tabs>li>a, .tabs-right>.nav-tabs>li>a { min-width: 15px; }
+      .tabs-right>.nav-tabs { margin-left: 0; }
+
+
+      /* My Stuff */
+      .respond { margin-left: 24px; }
+      .nits h4 { border-bottom: 1px solid #ddd; }
+
+      .nit { }
+      .nit ul {}
+      .nit.no-show ul { display: none; }
+
+
+    </style>
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+    <script src="js/jquery-1.10.2.min.js" type="application/javascript"></script>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <div class="span12"> <a class="brand" href="#">tinker land</a>
+            <ul class="nav">
+              <li><a href="#">Item 1</a></li>
+              <li><a href="#">Item 2</a></li>
+              <li><a href="#">Item 3</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="span12">
+          <h1>This page is for the tinkering</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span7">
+          <div class="tabbable tabs-right">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#submission-code4" data-toggle="tab">4</a></li>
+              <li><a href="#submission-code3" data-toggle="tab">3</a></li>
+              <li><a href="#submission-code2" data-toggle="tab">2</a></li>
+              <li><a href="#submission-code1" data-toggle="tab">1</a></li>
+            </ul>
+            <div class="tab-content">
+              <div id="submission-code4" class="tab-pane active">
+                <pre>
+  def index
+    @users = User.paginate(page: params[:page])
+  end
+
+  def new
+    @user = User.new
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def create
+    @user = User.new(params[:user])
+    if (@user.save)
+      sign_in @user
+      flash[:success] = "Welcome to THE microblog!"
+      redirect_to @user
+    else
+      render 'new'
+    end
+  end
+                </pre>
+              </div>
+              <div id="submission-code3" class="tab-pane">
+                <pre>
+  def index
+    @users = User.paginate(page: params[:page])
+  end
+
+  def new
+    @user = User.new
+  end
+
+  def show
+    @user = User.find(params[:id])
+  end
+
+                </pre>
+              </div>
+              <div id="submission-code2" class="tab-pane">
+                <pre>
+  def show
+    @user = User.find(params[:id])
+  end
+
+  def create
+    @user = User.new(params[:user])
+    if (@user.save)
+      sign_in @user
+      flash[:success] = "Welcome to THE microblog!"
+      redirect_to @user
+    else
+      render 'new'
+    end
+  end
+                </pre>
+              </div>
+              <div id="submission-code1" class="tab-pane">
+                <pre>
+  def index
+    @users = User.paginate(page: params[:page])
+  end
+
+  def new
+    @user = User.new
+  end
+
+                </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="span5">
+          <div id="nitpick-head">
+            <button type="submit" name="approvable" class="btn">I think this is done. Unlock the next one!</button>
+            <a href="javascrip:void(0)" id="nitpick-toggle" class="btn btn-primary">Nitpick</a>
+          </div>
+          <div id="nitpick">
+            <textarea name="comment" class="input-block-level" rows="10"></textarea>
+            <button type="submit" name="approvable" class="btn">I think this is done. Unlock the next one!</button>
+            <button type="submit" name="nitpick" class="btn btn-primary">Nitpick</button>
+          </div>
+          <div class="nits">
+            <div class="nit active" data-submission="4">
+              <h4><a href="javascript:void(0)">Submission 4</a></h4>
+              <ul>
+                <li>Nitpick 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out
+                <ul>
+                  <li>Response 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out.</li>
+                  <li>Response 2</li>
+                  <li>Response 3</li>
+                  <li>Response 4</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+
+                </li>
+                <li>Nitpick 2
+                <ul>
+                  <li>Response 1</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+
+                </li>
+              </ul>
+            </div>
+            <div class="nit no-show" data-submission="3">
+              <h4><a href="javascript:void(0)">Submission 3</a></h4>
+              <ul>
+                <li>Nitpick 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out
+                <ul>
+                  <li>Response 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out.</li>
+                  <li>Response 2</li>
+                  <li>Response 3</li>
+                  <li>Response 4</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+                </li>
+                <li>Nitpick 2
+                <ul>
+                  <li>Response 1</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+
+                </li>
+              </ul>
+            </div>
+            <div class="nit no-show" data-submission="2">
+              <h4><a href="javascript:void(0)">Submission 2</a></h4>
+              <ul>
+                <li>Nitpick 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out
+                <ul>
+                  <li>Response 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out.</li>
+                  <li>Response 2</li>
+                  <li>Response 3</li>
+                  <li>Response 4</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+                </li>
+                <li>Nitpick 2
+                <ul>
+                  <li>Response 1</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+
+                </li>
+              </ul>
+            </div>
+            <div class="nit no-show">
+              <h4><a href="javascript:void(0)" data-submission="1">Submission 1</a></h4>
+              <ul>
+                <li>Nitpick 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out
+                <ul>
+                  <li>Response 1 - this needs to be something longer than just your typical thing so that I can see how the media queries are working.  It might be useful to have some <code>code examples</code> in here as well to help out.</li>
+                  <li>Response 2</li>
+                  <li>Response 3</li>
+                  <li>Response 4</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+                </li>
+                <li>Nitpick 2
+                <ul>
+                  <li>Response 1</li>
+                </ul>
+                <div><a href="javascript:void(0)" class="respond">discuss nit</a></div>
+                <div class="response">
+                  <textarea name="comment" class="input-block-level" rows="3"></textarea>
+                  <button type="submit" name="nitpick" class="btn">Discuss Nit</button>
+                </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script>
+      $(function() {
+
+        $('.response').hide();
+        $('#nitpick').hide();
+
+        $('#nitpick-toggle').click(function() {
+          $('#nitpick').show();
+          $('#nitpick-head').hide();
+        });
+
+        $('.nit>h4').click(function() {
+          var submission  = $(this).parent().attr('data-submission');
+          if ($(this).parent().hasClass('no-show')) { $('a[href=#submission-code' + submission + ']').click(); }
+          $(this).parent().toggleClass('no-show');
+        });
+
+        $('.nitpick,.respond').click( function () {
+          $(this).parent().next().toggle();
+        });
+
+      });
+    </script>
+  </body>
+</html>
