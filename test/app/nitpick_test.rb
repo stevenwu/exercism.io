@@ -9,16 +9,13 @@ class NitpickAppTest < Minitest::Test
 
   attr_reader :master
   def setup
+    super
     @master = User.create({
       username: 'the_master',
       github_id: 0,
       email: "master@example.com",
       mastery: ['ruby', 'elixir', 'javascript', 'python', 'clojure']
     })
-  end
-
-  def teardown
-    Mongoid.reset
   end
 
   def generate_submission(language, exe)

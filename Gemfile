@@ -5,6 +5,7 @@ ruby "1.9.3"
 gem 'rake'
 gem 'faraday'
 gem 'activerecord'
+gem 'database_cleaner'
 gem 'newrelic_rpm', "3.5.8.72" # used both in production and development
 gem 'petroglyph'
 gem 'puma'

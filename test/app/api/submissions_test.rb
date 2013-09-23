@@ -16,10 +16,6 @@ class SubmissionsApiTest < Minitest::Test
     })
   end
 
-  def teardown
-    Mongoid.reset
-  end
-
   def logged_in
     { github_id: @alice.github_id }
   end
@@ -68,10 +64,6 @@ class SubmissionApiValidResponseTest < Minitest::Test
       current: {'ruby' => 'word-count', 'javascript' => 'anagram'}
     })
 
-  end
-
-  def teardown
-    Mongoid.reset
   end
 
   def logged_in
