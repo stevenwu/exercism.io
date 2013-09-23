@@ -8,7 +8,7 @@ class ExercismApp < Sinatra::Base
   private
   def submission_user
     if params[:key]
-      User.find_by(key: params[:key])
+      User.where(key: params[:key]).first
     elsif session[:github_id]
       current_user
     else

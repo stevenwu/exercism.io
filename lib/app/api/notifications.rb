@@ -9,7 +9,7 @@ class ExercismApp < Sinatra::Base
     def recipient
       @recipient ||= begin
         if params[:key]
-          User.find_by(key: params[:key])
+          User.where(key: params[:key]).first
         elsif session[:github_id]
           current_user
         end

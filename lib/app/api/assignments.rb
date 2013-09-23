@@ -82,7 +82,7 @@ class ExercismApp < Sinatra::Base
     unless params[:key]
       halt 401, {error: "Please provide API key"}.to_json
     end
-    user = User.find_by(key: params[:key])
+    user = User.where(key: params[:key]).first
     begin
       Unsubmit.new(user).unsubmit
     rescue Unsubmit::NothingToUnsubmit
