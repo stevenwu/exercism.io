@@ -45,7 +45,6 @@ class NitpickAppTest < Minitest::Test
   end
 
   def test_language_when_and_submission_present
-    skip "Reimplement the code behind this"
     generate_submission("clojure", "clj")
     get '/nitpick/clojure/no-nits', {}, 'rack.session' => logged_in
     assert last_response.body.include?("the_master"), "visible username"
@@ -54,7 +53,6 @@ class NitpickAppTest < Minitest::Test
   end
 
   def test_language_when_and_nitted_submission_present
-    skip "Reimplement the code behind this"
     generate_nitpick(generate_submission("clojure", "clj"))
     get '/nitpick/clojure/no-nits', {}, 'rack.session' => logged_in
     assert last_response.body.include?("the_master"), "visible username"
