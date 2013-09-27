@@ -6,8 +6,6 @@ class User < ActiveRecord::Base
   include ProblemSet
 
   serialize :mastery, Array
-  serialize :current, Hash
-  serialize :completed, Hash
 
   has_many :submissions
   has_many :notifications
@@ -17,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :team_memberships, class_name: "TeamMembership"
   has_many :teams, through: :team_memberships
 
+  has_many :user_exercises, class_name: "UserExercise"
+  has_many :exercises, through: :user_exercises
   before_create do
     self.key = create_key
     true
@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
     user.username   = username
     user.avatar_url = avatar_url.gsub(/\?.+$/, '') if avatar_url && !user.avatar_url
     user.save
+
     user
   end
 
@@ -55,15 +56,14 @@ class User < ActiveRecord::Base
   end
 
   def done
-    @done ||= completed_exercises.map do |lang, exercises|
-      exercises.map { |exercise|
-        latest_submission_on(exercise)
-      }
-    end.flatten
+    @done ||= completed_exercises.map do |exercise|
+      latest_submission_on(exercise)
+    end
   end
 
   def submissions_on(exercise)
-    submissions.order('id DESC').where(language: exercise.language, slug: exercise.slug)
+    submissions.where(exercise_id: exercise.id).
+                order('id DESC')
   end
 
   def most_recent_submission
@@ -75,8 +75,7 @@ class User < ActiveRecord::Base
   end
 
   def do!(exercise)
-    self.current[exercise.language] = exercise.slug
-    save
+    self.exercises << exercise
   end
 
   def sees?(language)
@@ -92,14 +91,6 @@ class User < ActiveRecord::Base
 
   def nitpicks_trail?(language)
     (completed.keys + current.keys).include?(language) || locksmith_in?(language)
-  end
-
-  def current_exercises
-    current.to_a.map {|cur| Exercise.new(*cur)}
-  end
-
-  def ==(other)
-    username == other.username && current == other.current
   end
 
   def is?(handle)

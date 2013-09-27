@@ -6,7 +6,7 @@ require 'rake/testtask'
 Rake::TestTask.new do |t|
   require 'bundler'
   Bundler.require
-  t.pattern = "test/**/*_test.rb"
+  t.pattern = "test/exercism/*_test.rb"
 end
 
 namespace :db do

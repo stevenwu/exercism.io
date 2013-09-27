@@ -10,7 +10,9 @@ class AssignmentTest < Minitest::Test
   attr_reader :assignment, :fake
   def setup
     super
-    @fake = Locale.new('fake', 'ext', 'test')
+    @fake = Language.create!(name: 'fake', code_extension: 'ext', test_extension: 'test')
+    ex_type = ExerciseType.create!(slug: 'one')
+    Exercise.create!(language: @fake, exercise_type: ex_type)
     @assignment = Assignment.new(fake, 'one', './test/fixtures')
   end
 

@@ -2,6 +2,7 @@ class Exercism
   class UnknownLanguage < StandardError; end
 end
 
+=begin
 class UnknownLocale
   attr_reader :file, :extension
   def initialize(file, extension)
@@ -34,3 +35,4 @@ Locale = Struct.new(:language, :code_extension, :test_extension) do
   end
 
 end
+=end

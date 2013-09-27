@@ -67,11 +67,11 @@ class Notification < ActiveRecord::Base
   end
 
   def language
-    submission.language if submission
+    submission.exercise.language if submission
   end
 
   def slug
-    submission.slug if submission
+    submission.exercise.slug if submission
   end
 end
 

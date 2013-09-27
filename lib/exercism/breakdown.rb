@@ -23,9 +23,12 @@ class Breakdown
   end
 
   def aggregate
-    @aggregate ||= Submission.pending.where(language: @language).
-                                      group(:slug).
-                                      select("slug, COUNT(*) as c")
+    @aggregate ||= begin
+      exercise = Exercise.where(language_id: @language.id)
+      Submission.pending.where(exercise: exercise).
+                         group(:slug).
+                         select("slug, COUNT(*) as c")
+    end
   end
 
   def exercise(slug)

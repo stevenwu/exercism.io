@@ -9,13 +9,6 @@ require 'exercism/notification'
 
 class NotificationTest < Minitest::Test
 
-  def teardown
-    super
-    @alice = nil
-    @bob = nil
-    @submission = nil
-  end
-
   def alice
     @alice ||= User.create(username: 'alice')
   end
@@ -24,8 +17,12 @@ class NotificationTest < Minitest::Test
     @bob ||= User.create(username: 'bob')
   end
 
+  def exercise
+    @exercise ||= create_sample_exercise('ruby', 'one')
+  end
+
   def submission
-    @submission ||= Submission.create(language: 'ruby', slug: 'one', user: alice)
+    @submission ||= Submission.create(exercise: exercise, user: alice)
   end
 
   def test_create_notification
@@ -44,7 +41,7 @@ class NotificationTest < Minitest::Test
   def test_created_notification_has_useful_information
     notification = Notification.on(submission, to: bob, regarding: 'stuff')
     assert_equal submission, notification.submission
-    assert_equal 'ruby', notification.language
+    assert_equal 'ruby', notification.language.name
     assert_equal 'one', notification.slug
     assert_equal 'alice', notification.username
     assert_equal 'stuff', notification.regarding

@@ -8,8 +8,6 @@ class CreateUsers < ActiveRecord::Migration
       t.string   :key
 
       t.string :mastery
-      t.string :current
-      t.string :completed
 
       t.timestamps
 

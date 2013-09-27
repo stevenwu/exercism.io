@@ -30,16 +30,16 @@ class Exercism
 end
 
 class Curriculum
-  attr_reader :path, :trails, :locales
+  attr_reader :path, :trails, :languages
   def initialize(path)
     @path = path
-    @locales = []
+    @languages = []
     @trails = {}
   end
 
   def add(curriculum)
-    @trails[curriculum.locale.to_sym] = Trail.new(curriculum.locale, curriculum.slugs, path)
-    @locales << curriculum.locale
+    @trails[curriculum.language.to_sym] = Trail.new(curriculum.language, curriculum.slugs, path)
+    @languages << curriculum.language
   end
 
   def in(language)
@@ -57,7 +57,7 @@ class Curriculum
   private
 
   def available_languages
-    locales.map(&:language)
+    languages
   end
 
 end

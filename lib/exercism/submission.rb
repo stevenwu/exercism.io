@@ -4,6 +4,7 @@ class Submission < ActiveRecord::Base
 
   belongs_to :user
   has_many :comments, order: 'created_at ASC'
+  belongs_to :exercise
 
   has_many :submission_viewers
   has_many :viewers, through: :submission_viewers
@@ -11,18 +12,26 @@ class Submission < ActiveRecord::Base
   has_many :muted_submissions
   has_many :muted_by, through: :muted_submissions, source: :user
 
-  validates_presence_of :user
+  validates :user, presence: true
+  validates :exercise, presence: true
 
   before_create do
     self.state          ||= "pending"
     self.nit_count      ||= 0
-    self.version        ||= 0
     self.wants_opinions ||= false
     self.is_liked       ||= false
+
+    # Experiment: Cache the iteration number so that we can display it
+    # on the dashboard without pulling down all the related versions
+    # of the submission.
+    # Preliminary testing in development suggests an 80% improvement.
+    self.version = Submission.related(self).count + 1
+
     true
   end
 
   def self.pending_for(language, exercise=nil)
+    raise "FIXME"
     if exercise
       pending.
         and(language: language.downcase).
@@ -34,15 +43,18 @@ class Submission < ActiveRecord::Base
   end
 
   def self.completed_for(language, slug)
+    raise "FIXME"
     done.where(language: language, slug: slug)
   end
 
   def self.related(submission)
-    order('created_at ASC').
-      where(user_id: submission.user.id, language: submission.language, slug: submission.slug)
+    where(user_id: submission.user.id,
+          exercise_id: submission.exercise.id).
+          order('created_at ASC')
   end
 
   def self.nitless
+    raise "FIXME"
     pending.where(:'nits._id'.exists => false)
   end
 
@@ -55,10 +67,7 @@ class Submission < ActiveRecord::Base
   end
 
   def self.on(exercise)
-    submission = new
-    submission.on exercise
-    submission.save
-    submission
+    create(exercise: exercise)
   end
 
   def self.assignment_completed?(submission)
@@ -117,19 +126,15 @@ class Submission < ActiveRecord::Base
     self.created_at.utc < (Time.now.utc - time)
   end
 
-  def exercise
-    @exercise ||= Exercise.new(language, slug)
-  end
-
   def assignment
     @assignment ||= trail.assign(slug)
   end
 
+=begin
   def on(exercise)
-    self.language = exercise.language
-
-    self.slug = exercise.slug
+    self.exercise = Exercise.for(language, slug)
   end
+=end
 
   def supersede!
     if pending? || hibernating? || tweaked?
@@ -236,16 +241,8 @@ class Submission < ActiveRecord::Base
 
   private
 
-  # Experiment: Cache the iteration number so that we can display it
-  # on the dashboard without pulling down all the related versions
-  # of the submission.
-  # Preliminary testing in development suggests an 80% improvement.
-  before_create do |document|
-    self.version = Submission.related(self).count + 1
-  end
-
   def trail
-    Exercism.current_curriculum.trails[language]
+    Exercism.current_curriculum.trails[exercise.language]
   end
 
   class DeterminesParticipants

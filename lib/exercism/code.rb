@@ -1,13 +1,14 @@
 class Code
 
-  attr_reader :path, :locales
-  def initialize(path, locales)
+  attr_reader :path
+  def initialize(path)
     @path = path
-    @locales = locales
   end
 
   def language
-    locale.language
+    @language ||= begin
+      find_language || raise(Exercism::UnknownLanguage.new)
+    end
   end
 
   def filename
@@ -28,12 +29,8 @@ class Code
     @path_segments = path.split(/\/|\\/)
   end
 
-  def identify_locale
-    locales.find {|settings| settings.code_extension == extension}
-  end
-
-  def locale
-    @locale ||= identify_locale || UnknownLocale.new(filename, extension)
+  def find_language
+    Language.where(code_extension: extension).first
   end
 end
 
