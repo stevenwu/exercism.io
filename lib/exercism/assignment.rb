@@ -1,23 +1,22 @@
 class Assignment
 
-  attr_reader :path, :locale, :slug, :data_dir
-  def initialize(locale, slug, path)
-    @locale = locale
+  attr_reader :path, :language, :slug, :data_dir
+  def initialize(language, slug, path)
+    @language = language
     @slug = slug
     @data_dir = path
-    @path = File.join(path, locale.to_s, slug)
-  end
-
-  def language
-    locale.language
+    @path = File.join(path, language.to_s, slug)
   end
 
   def name
-    exercise.name
+    exercise.exercise_type.name
   end
 
   def exercise
-    @exercise ||= Exercise.new(language, slug)
+    @exercise ||= begin
+      type = ExerciseType.where(slug: slug).first!
+      Exercise.where(language_id: language.id, exercise_type_id: type.id).first!
+    end
   end
 
   def tests
@@ -25,7 +24,7 @@ class Assignment
   end
 
   def test_file
-    "#{slug}_test.#{locale.test_extension}"
+    "#{slug}_test.#{language.test_extension}"
   end
 
   def example
@@ -33,7 +32,7 @@ class Assignment
   end
 
   def example_file
-    "example.#{locale.code_extension}"
+    "example.#{language.code_extension}"
   end
 
   def blurb

@@ -1,9 +1,4 @@
-require 'exercism/locale'
-
 class FakeTrail
-  def language
-    locale.language
-  end
 end
 
 class FakePythonCurriculum < FakeTrail
@@ -11,8 +6,8 @@ class FakePythonCurriculum < FakeTrail
     %w(one two)
   end
 
-  def locale
-    Locale.new('python', 'py', 'py')
+  def language
+    Language.create(name: 'python', code_extension: 'py', test_extension: 'py')
   end
 end
 
@@ -21,8 +16,8 @@ class FakeRubyCurriculum < FakeTrail
     %w(one two)
   end
 
-  def locale
-    Locale.new('ruby', 'rb', 'rb')
+  def language
+    Language.create(name: 'ruby', code_extension: 'rb', test_extension: 'rb')
   end
 end
 
@@ -31,8 +26,8 @@ class FakeGoCurriculum < FakeTrail
     %w(one two)
   end
 
-  def locale
-    Locale.new('go', 'go', 'go')
+  def language
+    Language.create(name: 'go', code_extension: 'go', test_extension: 'go')
   end
 end
 
@@ -41,7 +36,7 @@ class FakeCurriculum < FakeTrail
     %w(one two)
   end
 
-  def locale
-    Locale.new('fake', 'ext', 'test')
+  def language
+    Language.create(name: 'fake', code_extension: 'ext', test_extension: 'test')
   end
 end

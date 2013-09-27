@@ -9,15 +9,15 @@ class TrailTest < Minitest::Test
   attr_reader :trail, :one, :two, :go
 
   def setup
-    super 
-    @go = Locale.new('go', 'go', 'go')
+    super
+    @go = Language.create!(name: "go", code_extension: "go", test_extension: "go")
     @trail = Trail.new(go, ['one', 'two'], '/tmp')
-    @one = Exercise.new('go', 'one')
-    @two = Exercise.new('go', 'two')
+    @one = create_sample_exercise('go', 'one')
+    @two = create_sample_exercise('go', 'two')
   end
 
   def test_language
-    assert_equal 'go', trail.language
+    assert_equal @go, trail.language
   end
 
   def test_first_exercise_on_trail

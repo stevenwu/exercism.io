@@ -1,15 +1,10 @@
 class Trail
 
-  attr_reader :exercises, :locale, :path, :slugs
-  def initialize(locale, slugs, path)
+  attr_reader :language, :path, :slugs
+  def initialize(language, slugs, path)
     @slugs = slugs
-    @locale = locale
-    @exercises = slugs.map {|slug| Exercise.new(locale.to_s, slug)}
+    @language = language
     @path = path
-  end
-
-  def language
-    locale.language
   end
 
   def find(slug)
@@ -17,7 +12,7 @@ class Trail
   end
 
   def assign(slug)
-    Assignment.new(locale, slug, path)
+    Assignment.new(language, slug, path)
   end
 
   def first
@@ -32,6 +27,17 @@ class Trail
     exercises.find do |ex|
       !completed.include?(ex.slug)
     end
+  end
+
+  private
+
+  def exercises
+    @exercises ||= Exercise.where(language_id: language.id).
+                            where(exercise_type_id: exercise_types)
+  end
+
+  def exercise_types
+    @exercise_types ||= ExerciseType.where(slug: @slugs).pluck(:id)
   end
 
 end
