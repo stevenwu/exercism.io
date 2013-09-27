@@ -7,7 +7,7 @@ node submission: submission do
   collection nits: submission.comments do |nit|
     node nit: nit do
       attributes :id
-      node text: md(nit.comment)
+      node text: md(nit.body)
       node avatar_url: gravatar_tag(nit.user.avatar_url)
       node github_link: github_profile_link(nit.user)
       node timestamp: ago(nit.at)

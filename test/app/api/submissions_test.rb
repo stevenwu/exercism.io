@@ -98,8 +98,6 @@ class SubmissionApiValidResponseTest < Minitest::Test
   end
 
   def test_get_submission_valid_response
-    skip "No idea why this doesn't work"
-
     Attempt.new(alice, 'CODE', 'word-count/file.rb').save
     submission = Submission.first
 
